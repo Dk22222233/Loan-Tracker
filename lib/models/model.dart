@@ -28,3 +28,5 @@ class PersonModel {
     );
   }
 }
+
+class Commit2 {}
