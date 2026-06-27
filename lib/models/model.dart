@@ -32,5 +32,3 @@ class PersonModel {
 class Commit2 {}
 
 class Commit3 {}
-
-class Commit4 {}
