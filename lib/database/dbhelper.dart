@@ -55,16 +55,18 @@ class Dbhelper {
   }
 
   //----Load All data to UI for Person
+  //----Qureied table is list of maps, each map is a row in the table
   Future<List<Map<String, dynamic>>> getAll() async {
     final db = await resueDB();
     return await db.query('Person');
   }
 
-  //----Method to read just one person for Single Person Page
+  //----Method to read just one person for image update, not used anywhere
   Future<Map<String, dynamic>?> readPerson(int id) async {
     final db = await resueDB();
     final List<Map<String, dynamic>> table =
         await db.query('Person', where: 'id=?', whereArgs: [id]);
+    //-----first means that only one person when id matches will be returned, if no person found then return null
     if (table.isNotEmpty) return table.first;
     return null;
   }

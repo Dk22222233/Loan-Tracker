@@ -6,10 +6,12 @@ import 'dart:io'; // ADD THIS
 class Service extends Notifier<List<PersonModel>> {
   @override
   List<PersonModel> build() {
+    //------build method is called when the provider is 1st created, before it, it first reads the data from database and then returns the state
     readAll();
     return [];
   }
 
+//----used to insert data into database and then update the state
   Future<void> insert(PersonModel personObj) async {
     final db = Dbhelper();
     final realID = await db.insertData(personObj);
@@ -23,6 +25,7 @@ class Service extends Notifier<List<PersonModel>> {
     state = List.from(state)..add(newObj);
   }
 
+//----used to convert the json data from database to model and store in state
   Future<void> readAll() async {
     final db = Dbhelper();
     final maps = await db.getAll();
@@ -33,14 +36,16 @@ class Service extends Notifier<List<PersonModel>> {
     state = persons;
   }
 
-  Future<PersonModel?> readSinglePerson(int id) async {
-    final db = Dbhelper();
-    final Map<String, dynamic>? result = await db.readPerson(id);
-    if (result != null) {
-      return PersonModel.fromMap(result);
-    }
-    return null;
-  }
+//---used to read a single person by id
+//---I never called it anywhere.....
+  // Future<PersonModel?> readSinglePerson(int id) async {
+  //   final db = Dbhelper();
+  //   final Map<String, dynamic>? result = await db.readPerson(id);
+  //   if (result != null) {
+  //     return PersonModel.fromMap(result);
+  //   }
+  //   return null;
+  // }
 
   //---ADD THIS: Update person with new image
   Future<void> updatePerson(PersonModel updatedPerson) async {
@@ -66,6 +71,7 @@ class Service extends Notifier<List<PersonModel>> {
     }
   }
 
+//---called when user deletes a person, it deletes the person from database and also deletes the image file if it exists
   Future<void> deleteRow(int id) async {
     final db = Dbhelper();
 
@@ -77,9 +83,11 @@ class Service extends Notifier<List<PersonModel>> {
         await deleteImageFile(imagePath);
       }
     }
-
+//---use of lambda function to delete the person from database and then update the state by removing the person from the list
     await db.deletePerson(id);
     final List<PersonModel> finalList = List.from(state);
+
+    ///----removing the person from state is used to update the UI after deleting the person from database
     finalList.removeWhere((person) => person.id == id);
     state = finalList;
   }

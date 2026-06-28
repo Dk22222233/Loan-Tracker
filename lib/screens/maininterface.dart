@@ -90,6 +90,7 @@ class Maininterface extends ConsumerWidget {
                 borderRadius: BorderRadius.circular(20),
                 child: ListTile(
                   title: Text(
+                    //-----> Display the person's name by accessing from state (data list) using the index
                     data[index].name,
                     style: const TextStyle(
                       color: Colors.black,
@@ -134,6 +135,8 @@ class Maininterface extends ConsumerWidget {
                       showDialog(
                         context: context,
                         builder: ((context) =>
+
+                            ///----> Pass the person's id to the DeletionAlert widget to delete the person while accessing by index from the state (data list)
                             DeletionAlert(personID: data[index].id)),
                       );
                     },
@@ -143,10 +146,11 @@ class Maininterface extends ConsumerWidget {
                     ),
                   ),
                   onTap: () {
+                    ///-----Use index of state (list of persons) to navigate to the Person screen and pass the index as an argument
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: ((context) => Person(id: index))),
+                          builder: ((context) => Person(index: index))),
                     );
                   },
                 ),

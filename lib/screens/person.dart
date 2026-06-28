@@ -6,8 +6,8 @@ import 'package:qarazdare/providers/transaction_notifier.dart';
 import 'dart:io'; // ADD THIS
 
 class Person extends ConsumerStatefulWidget {
-  final int id;
-  const Person({super.key, required this.id});
+  final int index;
+  const Person({super.key, required this.index});
   @override
   ConsumerState<Person> createState() => _Person();
 }
@@ -20,12 +20,12 @@ class _Person extends ConsumerState<Person> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref
           .read(transactionProvider.notifier)
-          .getTransPerson(onePerson[widget.id].id);
+          .getTransPerson(onePerson[widget.index].id);
     });
     final loan = ref.read(transactionProvider.notifier).getTotalLoan();
 
-    // Get the person object
-    final person = onePerson[widget.id];
+    //===> Get the person object using the provided index from list of persons in the state
+    final person = onePerson[widget.index];
 
     return Scaffold(
       appBar: AppBar(
